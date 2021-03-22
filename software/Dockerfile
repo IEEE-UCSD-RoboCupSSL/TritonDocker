@@ -12,6 +12,7 @@ RUN git clone https://github.com/IEEE-UCSD-RoboCupSSL/TritonsRCSC-Software-Pack.
     cd TritonsRCSC-Software-Pack && make install && \
     git -C TritonSoccerAI reset --hard d6a4a40eac7fbab1c7ce54bdc6bea77be651576f && \
     git -C TritonBot      reset --hard 09f95a97a5af7a19a0c6f2eaba9143ac232efb3a && \
+    sed -i 's/"robot_config.json"/"\/vfirm-config"/' Virtual-Firmware-grSim/main.cpp && \
     make init && make all
 
 FROM ubuntu:20.04
@@ -27,8 +28,8 @@ WORKDIR /TritonsRCSC-Software-Pack
 COPY --from=build /TritonsRCSC-Software-Pack/TritonSoccerAI/target/*.jar \
     TritonSoccerAI/target/
 COPY --from=build /TritonsRCSC-Software-Pack/TritonBot/build TritonBot/build
-COPY --from=build /TritonsRCSC-Software-Pack/Virtual-Firmware-grSim \
-    Virtual-Firmware-grSim
+COPY --from=build /TritonsRCSC-Software-Pack/Virtual-Firmware-grSim/vfirm.exe \
+    Virtual-Firmware-grSim/vfirm.exe
 
 ENTRYPOINT ["python3", "TestScripts/test.py"]
 

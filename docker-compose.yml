@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  grsim:
+    image: tritonsrcsc/grsim
+    container_name: grsim
+    networks:
+      static-network:
+        ipv4_address: 173.18.0.2
+    environment:
+      - VNC_PASSWORD=vnc
+      - VNC_GEOMETRY=1920x1080
+    ports:
+      - 6900:5900
+
+  software:
+    image: tritonsrcsc/software
+    container_name: software
+    networks:
+      static-network:
+        ipv4_address: 173.18.0.3
+    entrypoint: bash
+    volumes:
+      - ./robot_config.json:/vfirm-config
+
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 173.18.0.0/16
